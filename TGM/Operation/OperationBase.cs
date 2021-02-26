@@ -1,32 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using OpenQA.Selenium;
+using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WebBotCore.Interfase;
+using WebBotCore.Model;
 
-namespace TGM.Operation
+namespace WebBotCore.Operation
 {
-    public class OperationBase : IOperation
+    public abstract class OperationBase : IOperation
     {
-        public OperationBase()
-        {
-            ID = Guid.NewGuid();
-        }
-
-        public Guid ID { get; private set; }
-
+        protected IWebDriver driver;
         public int Priorety { get; set; } = 0;
 
-        public List<OperionException> Exceptions => new List<OperionException>();
-
         public long Duration => timer.ElapsedMilliseconds;
+
+        public Uri OperationPage { protected set;  get; }
+
         private Stopwatch timer = new Stopwatch();
 
-        public virtual bool Execute()
+        public void Execute()
         {
             if (!timer.IsRunning)
                 timer.Start();
+
+            try
+            {
+                Action();
+                timer.Stop();
+            }
+            catch (Exception ex)
+            {
+                timer.Stop();
+                ExceptionManager.Log(ex);
+            }
+        }
+
+        public void SetDriver(IWebDriver driver)
+        {
+            this.driver = driver;
+        }
+
+        protected virtual void Action()
+        {
             throw new NotImplementedException();
         }
     }

@@ -6,6 +6,5 @@ namespace TGM
     public class BotProfile
     {
 
-
     }
 }
