@@ -9,10 +9,8 @@ namespace WebBotCore
 {
     class Program
     {
-        static Worker worker = new Worker();
         static void Main(string[] args)
         {
-            Task.Delay(-1).Wait();
         }
     }
 }

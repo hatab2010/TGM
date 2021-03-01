@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace WebBotCore.Interfase
 {
-    public interface IAuthorizedTicket
+    public interface ISiteProfile
     {
-        IProfile Profile { get; }
-        Uri Site { get; }
-        List<ICustomeCookie> AuthorizedCookies { set; get; }
+        Uri Page { get; }
+        string Login { get; }
+        string Password { get; }
+        bool IsBan { get; }
     }
 }

@@ -51,7 +51,7 @@
   <ItemGroup>
     <Compile Include="Data\TelegramProfile.cs" />
     <Compile Include="Global.cs" />
-    <Compile Include="Model\TelegramDriver.cs" />
+    <Compile Include="Model\WorkersManager.cs" />
     <Compile Include="Operation\LoginOperation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

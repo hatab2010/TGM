@@ -9,8 +9,6 @@ namespace WebBotCore.Interfase
         Uri OperationPage { get; }
         long Duration { get; }
         int Priorety { set; get; }
-        void Execute();
-
-        void SetDriver(IWebDriver driver);
+        OperationResult Execute(IWebDriver driver);
     }
 }

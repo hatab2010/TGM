@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WebBotCore.Interfase
-{
-    public interface ISiteAuthorize
+{    
+    public interface IAuthorizationTicket
     {
-        Uri OperationPage { get; }
-        IProfile Profile { get; }
-        Action<IAuthorizedTicket> SuccessAction { get; }
+        ISiteProfile SiteProfile { get; }
+        IChromeProfile ChromeProfile { get; }
     }
 }

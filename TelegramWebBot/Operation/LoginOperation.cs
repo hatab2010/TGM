@@ -10,15 +10,15 @@ using System.Collections.Generic;
 
 namespace TelegramWebBot.Operation
 {
-    class LoginOperation : OperationBase, ISiteAuthorize
+    class LoginOperation : OperationBase, ISiteAuthorized
     {
-        public  IProfile Profile { private set; get; }
-        public Action<IAuthorizedTicket> SuccessAction { get; private set; }
+        private IProfile profile;
 
-        public LoginOperation(TelegramProfile profile, Action<IAuthorizedTicket> successCallback)
+        public IAuthorizedTicket Ticket { private set; get; } = null;
+
+        public LoginOperation(TelegramProfile profile)
         {
-            SuccessAction = successCallback;
-            Profile = profile;
+            this.profile = profile;
             OperationPage = new Uri(Global.TELEGRAM_PAGE_LOGIN);
         }
 
@@ -26,8 +26,10 @@ namespace TelegramWebBot.Operation
         {
             driver.Navigate().GoToUrl(Global.TELEGRAM_PAGE_LOGIN);
 
-            var phoneInput = driver.WaitElement(By.XPath("//input[contains(@name, 'phone_number')]"), 10000);
-            var correctPhone = Regex.Replace(Profile.Login, @"^\+7|^8", "");
+            var phoneInput = driver
+                .WaitElement(By.XPath("//input[contains(@name, 'phone_number')]"), 10000);
+            var correctPhone = Regex
+                .Replace(profile.Login, @"^\+7|^8", "");
 
             phoneInput.SendKeys(correctPhone);
 
@@ -45,14 +47,14 @@ namespace TelegramWebBot.Operation
                 confirmButton.Click();
             }
 
-            //TODO интегрировать API телефонию
+            //TODO интегрировать подтверждение
 
-            if (!string.IsNullOrEmpty(Profile.Password))
+            if (!string.IsNullOrEmpty(profile.Password))
             {
                 var passwordInput = driver
                     .WaitElement(By.XPath("//input[contains(@name, 'password')]"), 40000);
 
-                passwordInput.SendKeys(Profile.Password);
+                passwordInput.SendKeys(profile.Password);
                 passwordInput.SendKeys(Keys.Enter);
             }
 
@@ -71,11 +73,6 @@ namespace TelegramWebBot.Operation
                     //Key = item.k
                 });
             }
-
-            SuccessAction?.Invoke(new AuthorizedTicket(OperationPage, Profile)
-            {
-                AuthorizedCookies = cookies,
-            });
         }
     }
 }

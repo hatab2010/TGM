@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TelegramWebBot;
 using TelegramWebBot.Data;
 using TelegramWebBot.Operation;
+using WebBotCore.Interfase;
 using WebBotCore.Model;
 using WebBotCore.Operation;
 
@@ -16,6 +17,7 @@ namespace TelegramWebBot
         static Worker worker = new Worker();
         static void Main(string[] args)
         {
+            worker.OperationExecuted += OnOperationExecuted;
             worker.Run();
 
             var loginOperation = new LoginOperation(
@@ -23,24 +25,19 @@ namespace TelegramWebBot
                     {
                         Password = "216910",
                         Login = "89516622107"
-                    },
-
-                    (ticket) => { 
-                        //TODO сохранить тикет авторизации
                     }
                 );
 
             worker.AddOperation(loginOperation);
-            
 
             Task.Delay(-1).Wait();
         }
 
-        private static void OnOperationExecuted(IOperationResult result)
+        private static void OnOperationExecuted(IOperation result)
         {
-            if (result is LoginOperation)
+            if (result is ISiteAuthorized)
             {
-
+                var ticket = (result as ISiteAuthorized).Ticket;
             }
         }
     }

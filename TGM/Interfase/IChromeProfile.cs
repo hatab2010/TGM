@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace WebBotCore.Interfase
 {
-    public interface IProfile
+    public interface IChromeProfile
     {
-        Guid Id { get; }
-        string Login { get; }
-        string Password { get; }
+        string Id { get; }
     }
 }

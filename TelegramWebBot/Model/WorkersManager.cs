@@ -9,7 +9,7 @@ using WebBotCore.Model;
 
 namespace TelegramWebBot.Model
 {
-    public class TelegramDriver
+    public class ProfileManager
     {
         private TelegramProfile profile;
         private List<TelegramWorker> workers;

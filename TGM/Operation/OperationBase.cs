@@ -17,31 +17,44 @@ namespace WebBotCore.Operation
 
         private Stopwatch timer = new Stopwatch();
 
-        public void Execute()
+        public OperationResult Execute(IWebDriver driver)
         {
+            this.driver = driver;
+
             if (!timer.IsRunning)
                 timer.Start();
 
             try
             {
-                Action();
+                var result = Action();
                 timer.Stop();
+                return new OperationResult(result, true, this);
             }
             catch (Exception ex)
             {
                 timer.Stop();
                 ExceptionManager.Log(ex);
+                return new OperationResult(null, false, this);
             }
         }
 
-        public void SetDriver(IWebDriver driver)
-        {
-            this.driver = driver;
-        }
-
-        protected virtual void Action()
+        protected virtual object Action()
         {
             throw new NotImplementedException();
         }
+    }
+
+    public class OperationResult
+    {
+        public OperationResult(object value, bool isSuccess, IOperation operation)
+        {
+            CurrentOpeartion = operation;
+            Value = value;
+            IsSuccess = isSuccess;
+        }
+
+        public readonly IOperation CurrentOpeartion;
+        public object Value { private set; get; }
+        public bool IsSuccess { private set; get; }
     }
 }
